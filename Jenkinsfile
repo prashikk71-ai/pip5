@@ -1,0 +1,33 @@
+pipeline {
+	agent any 
+	
+	parameters {
+  		string defaultValue: 'DEV', name: 'ENV'
+	}
+	
+	triggers {
+  		pollSCM '* * * * *'
+	}
+	
+	stages {
+	    stage('Checkout') {
+	        steps {
+			checkout scm			       
+		      }}
+		stage('Build') {
+	           steps {
+			  sh '/home/prashik/Downloads/apache-maven-3.9.12/bin/mvn install'
+	                 }}
+		stage('Deployment'){
+		    steps {
+			script {
+			 if ( env.ENV == 'QA' ){
+        	sh 'cp target/pip5.war /home/prashik/Downloads/apache-tomcat-11.0.15/webapps'
+        	echo "deployment has been COMPLETED on QA!"
+			 }
+			else ( env.ENV == 'UAT' ){
+    		sh 'cp target/pip5.war /home/prashik/Downloads/apache-tomcat-11.0.15/webapps'
+    		echo "deployment has been done on UAT!"
+			}
+			}}}	
+}}
