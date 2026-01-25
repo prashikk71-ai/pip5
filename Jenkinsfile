@@ -21,7 +21,7 @@ pipeline {
 		stage('Deployment'){
 		    steps {
 			script {
-			 if ( env.ENV == 'QA' ){
+			 if ( env.DEV == 'QA' ){
         	sh 'cp target/pip5.war /home/prashik/Downloads/apache-tomcat-11.0.15/webapps'
         	echo "deployment has been COMPLETED on QA!"
 			 }
